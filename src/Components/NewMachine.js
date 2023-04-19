@@ -9,9 +9,10 @@ import spritesheet from "../Assets/Images/sym_anim.png";
 import spritesheetData from "../Assets/Images/sym_anim.json";
 import Button from '@mui/material/Button';
 import Alert from "@mui/material/Alert";
-import SpinPay from '../Assets/Sounds/SpinPay.wav'
-import Win from '../Assets/Sounds/Win.wav'
+import SpinPay from '../Assets/Sounds/SpinPay.wav?version=1.0'
+import Win from '../Assets/Sounds/Win.wav?version=1.0'
 import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
+import Winner from '../Assets/Images/winner.jpg'
 
     function getRandomElement() {
     const items = [   
@@ -42,24 +43,44 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
     const [startingMessage, setStartingMessage] = useState(true)
     const [isWin, setIsWin] = useState(false)
     const buttonSpaceBar = useRef();
-    const BackgroundMusic = new Audio(BackgroundMelody)
+    const BackgroundMusic = new Audio(BackgroundMelody);
+    const [spacebarPressed, setSpacebarPressed] = useState(false);
+    const winSoundRef = useRef(null);
+    const spinPaySoundRef = useRef(null);
+
     BackgroundMusic.volume = 0.1;
     BackgroundMusic.loop = true;
     BackgroundMusic.play()
+
     const handleSpacebar = (event) => {
-        if (event.code === 'Space') {
-          event.preventDefault(); // prevent scrolling
-          buttonSpaceBar.current.click(); // simulate a click on the button
-        }
-      };
+      if (event.code === 'Space' && !spacebarPressed) {
+        event.preventDefault();
+        buttonSpaceBar.current.click();
+        setSpacebarPressed(true);
+      }
+    };
     
-      useEffect(() => {
-        window.addEventListener('keydown', handleSpacebar);
-        return () => window.removeEventListener('keydown', handleSpacebar);
-      }, []);
+    const handleSpacebarUp = (event) => {
+      if (event.code === 'Space') {
+        setSpacebarPressed(false);
+      }
+    };
+    
+    useEffect(() => {
+      window.addEventListener('keydown', handleSpacebar);
+      window.addEventListener('keyup', handleSpacebarUp);
+      return () => {
+        window.removeEventListener('keydown', handleSpacebar);
+        window.removeEventListener('keyup', handleSpacebarUp);
+      };
+    }, [spacebarPressed]);
 
     useEffect(() => {
     setReels(generateNewReels())
+    const winSound = new Audio(Win);
+    const spinPaySound = new Audio(SpinPay);
+    winSoundRef.current = winSound;
+    spinPaySoundRef.current = spinPaySound;
     }, []);
 
     function checkForWin() {
@@ -68,7 +89,7 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
         const reel3 = document.querySelectorAll(".reel3");
         let message = "Try again!";
         let winningCombinations = []
-        const winSound = new Audio(Win)
+        const winSound = winSoundRef.current;
         const addWinningElement = (element, reelColumn, reelRow) => {
             if (element !== false && element !== null){
                 const alt = element.querySelector('img')?.getAttribute('alt')
@@ -87,6 +108,7 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
         ) {
           addWinningElement(reel1[0], 1, 1)
           message = "You win!";
+          winSoundRef.current.currentTime = 0;
           winSound.play()
         } if (
           reel1[1].innerHTML === reel2[1].innerHTML &&
@@ -94,6 +116,7 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
         ) {
             addWinningElement(reel1[1], 2, 2)
           message = "You win!";
+          winSoundRef.current.currentTime = 0;
           winSound.play()
         } if (
           reel1[2].innerHTML === reel2[2].innerHTML &&
@@ -101,6 +124,7 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
         ) {
             addWinningElement(reel1[2], 3, 3)
           message = "You win!";
+          winSoundRef.current.currentTime = 0;
           winSound.play()
         }
         setMessage(message);
@@ -119,9 +143,6 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
         setIsSpinning(false);
         checkForWin()
         winningAnimation(checkForWin())  
-        document.querySelectorAll("div[style*='fixed']").forEach((sprite) => {
-            sprite.remove();
-          })
     }
 
     function HandleSpinClick(){
@@ -132,7 +153,7 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
             stopSpin()
     }
     }
-
+    
     function winningAnimation(winningCombinations) {
         const image = new Image();
         image.src = spritesheet;
@@ -182,8 +203,8 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
                 spritesInCombo.push(sprite);
 
                 timeline.to(sprite, {
-                  top: top + (combo.reelRow) * height - 152, // position the sprite based on the row
-                  left: left + (i - combo.reelRow) * width * 1.15 + 115 + i, // move the sprite to the right
+                  top: top + (combo.reelRow) * height - 152,
+                  left: left + (i - combo.reelRow) * width * 1.15 + 115 + i,
                   duration: 0,
                 });
               }
@@ -210,8 +231,9 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
             document.querySelectorAll("div[style*='fixed']").forEach((sprite) => {
             sprite.remove();
           })
-        const spinPay = new Audio(SpinPay)
-        spinPay.volume = 0.7
+        const spinPay = spinPaySoundRef.current;
+        spinPay.volume = 0.3
+        spinPaySoundRef.current.currentTime = 0;
         spinPay.play();
         const reel1 = document.querySelectorAll(".reel1");
         const reel2 = document.querySelectorAll(".reel2");
@@ -220,7 +242,7 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
         let numberOfSpins = 0
         setIsSpinning(true)
         setStartingMessage(false)
-
+        setIsWin(false)
         const updateReelElements = (reel, currentLap) => {
             if (reel === reel1 && currentLap <= lapCount) {
             reel.forEach((el) => {
@@ -302,13 +324,15 @@ import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
     }
     return (
         <main>
-        <div class="flex-col h-screen justify-center m-auto content-center bg-center bg-no-repeat" style={{ backgroundImage: `url(${background})`,  backgroundSize:'cover'}}>
+          <div class="flex-col h-screen justify-center m-auto content-center bg-center bg-no-repeat" style={{ backgroundImage: `url(${background})`,  backgroundSize:'cover'}}>
+            <div style={{transform: 'scale(0.5)'}}>
+            <div class={isWin ? 'absolute justify-center text-center w-96 h-28 bg-no-repeat animate-bounce lg:left-96 top-10 lg:ml-20' : 'hidden'} style={{backgroundImage: `url(${Winner})`, transform: 'translate(-50%, -50%)'}}></div>
+            </div>
             <div className='Message text-center pt-24'></div>
             <Alert variant="filled" severity={startingMessage ? 'info' : 'success'} className='w-96 text-lg content-center m-auto mb-5'>
             {startingMessage ? 'Click the PLAY button to start or spacebar!' : message}
             </Alert>
             <div class="overflow-hidden">
-            {/* <audio id="spin-pay" src="../Assets/Sounds/SpinPay.wav"></audio> */}
             <table class='relative mx-auto' style={{backgroundImage:`url(${frame})`, backgroundSize:'cover'}}>
                 <tbody>
                 {reels.map((e, i) => (
