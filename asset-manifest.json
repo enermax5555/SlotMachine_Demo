@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/SlotMachine_Demo/static/css/main.d71818bc.css",
+    "main.js": "/SlotMachine_Demo/static/js/main.03601f4b.js",
+    "static/js/787.cff5153b.chunk.js": "/SlotMachine_Demo/static/js/787.cff5153b.chunk.js",
+    "static/media/BackgroundMelody.wav": "/SlotMachine_Demo/static/media/BackgroundMelody.61d92d6cc6d997bc2f9b.wav",
+    "static/media/sym_anim.png": "/SlotMachine_Demo/static/media/sym_anim.6ad120739956becb58be.png",
+    "static/media/Background.png": "/SlotMachine_Demo/static/media/Background.03a352e6f14f9d7733c0.png",
+    "static/media/Win.wav": "/SlotMachine_Demo/static/media/Win.d2dbdd97b41f588b180c.wav",
+    "static/media/sym_plum.png": "/SlotMachine_Demo/static/media/sym_plum.98e95f0b9d0852cf7825.png",
+    "static/media/sym_orange.png": "/SlotMachine_Demo/static/media/sym_orange.172774422a82dcf00711.png",
+    "static/media/sym_lemon.png": "/SlotMachine_Demo/static/media/sym_lemon.ec2b41244007eabc55c7.png",
+    "static/media/SpinPay.wav": "/SlotMachine_Demo/static/media/SpinPay.f4432414b831e2dded92.wav",
+    "static/media/frame.png": "/SlotMachine_Demo/static/media/frame.a4db692cd5fe92ca4bb1.png",
+    "index.html": "/SlotMachine_Demo/index.html",
+    "main.d71818bc.css.map": "/SlotMachine_Demo/static/css/main.d71818bc.css.map",
+    "main.03601f4b.js.map": "/SlotMachine_Demo/static/js/main.03601f4b.js.map",
+    "787.cff5153b.chunk.js.map": "/SlotMachine_Demo/static/js/787.cff5153b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d71818bc.css",
+    "static/js/main.03601f4b.js"
+  ]
+}
