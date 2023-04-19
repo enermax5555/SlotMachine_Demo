@@ -2,6 +2,7 @@
   "name": "slot-machine",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://enermax5555.github.io/SlotMachine_Demo",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
