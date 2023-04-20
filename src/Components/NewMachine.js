@@ -12,7 +12,9 @@ import Alert from "@mui/material/Alert";
 import SpinPay from '../Assets/Sounds/SpinPay.wav?version=1.0'
 import Win from '../Assets/Sounds/Win.wav?version=1.0'
 import BackgroundMelody from '../Assets/Sounds/BackgroundMelody.wav'
-import Winner from '../Assets/Images/winner.jpg'
+import Winner1 from '../Assets/Images/winner.png'
+import BigWinner from '../Assets/Images/BigWinner.png'
+import MegaWinner from '../Assets/Images/MEGAwinner.png'
 
     function getRandomElement() {
     const items = [   
@@ -21,7 +23,6 @@ import Winner from '../Assets/Images/winner.jpg'
     <img src={plum} alt="plum" id='3' />,
     ];
     const randomElement = items[Math.floor(Math.random() * items.length)];
-    // const randomElement = items[2]
     return randomElement;
     }
 
@@ -40,6 +41,7 @@ import Winner from '../Assets/Images/winner.jpg'
     const [reels, setReels] = useState([]);
     const [isSpinning, setIsSpinning] = useState(false)
     const [message, setMessage] = useState('')
+    const [winner, setWinner] = useState('')
     const [startingMessage, setStartingMessage] = useState(true)
     const [isWin, setIsWin] = useState(false)
     const buttonSpaceBar = useRef();
@@ -89,6 +91,7 @@ import Winner from '../Assets/Images/winner.jpg'
         const reel3 = document.querySelectorAll(".reel3");
         let message = "Try again!";
         let winningCombinations = []
+        let winRowCount = 0
         const winSound = winSoundRef.current;
         const addWinningElement = (element, reelColumn, reelRow) => {
             if (element !== false && element !== null){
@@ -110,6 +113,7 @@ import Winner from '../Assets/Images/winner.jpg'
           message = "You win!";
           winSoundRef.current.currentTime = 0;
           winSound.play()
+          winRowCount++
         } if (
           reel1[1].innerHTML === reel2[1].innerHTML &&
           reel2[1].innerHTML === reel3[1].innerHTML
@@ -118,6 +122,7 @@ import Winner from '../Assets/Images/winner.jpg'
           message = "You win!";
           winSoundRef.current.currentTime = 0;
           winSound.play()
+          winRowCount++
         } if (
           reel1[2].innerHTML === reel2[2].innerHTML &&
           reel2[2].innerHTML === reel3[2].innerHTML
@@ -126,10 +131,18 @@ import Winner from '../Assets/Images/winner.jpg'
           message = "You win!";
           winSoundRef.current.currentTime = 0;
           winSound.play()
+          winRowCount++
         }
         setMessage(message);
         if( winningCombinations.length > 0){
             setIsWin(true);
+        }
+        if (winRowCount == 1){
+          setWinner(Winner1)
+        }else if(winRowCount == 2){
+          setWinner(BigWinner)
+        }else if(winRowCount == 3){
+          setWinner(MegaWinner)
         }
         return winningCombinations;
       }
@@ -325,16 +338,16 @@ import Winner from '../Assets/Images/winner.jpg'
     }
     return (
         <main>
-          <div class="flex-col h-screen justify-center m-auto content-center bg-center bg-no-repeat" style={{ backgroundImage: `url(${background})`,  backgroundSize:'cover'}}>
+          <div className="flex-col h-screen justify-center m-auto content-center bg-center bg-no-repeat max-h-screen overflow-y-auto" style={{ backgroundImage: `url(${background})`,  backgroundSize:'cover'}}>
             <div style={{transform: 'scale(0.5)'}}>
-            <div class={isWin ? 'absolute justify-center text-center w-96 h-28 bg-no-repeat animate-bounce lg:left-96 top-10 lg:ml-20' : 'hidden'} style={{backgroundImage: `url(${Winner})`, transform: 'translate(-50%, -50%)'}}></div>
+            <div className={isWin ? 'absolute justify-center text-center w-96 h-28 bg-no-repeat animate-bounce lg:left-96 top-10 lg:ml-20' : 'hidden'} style={{backgroundImage: `url(${winner})`, transform: 'translate(-50%, -50%)'}}></div>
             </div>
             <div className='Message text-center pt-24'></div>
             <Alert variant="filled" severity={startingMessage ? 'info' : 'success'} className='w-96 text-lg content-center m-auto mb-5'>
             {startingMessage ? 'Click the PLAY button to start or spacebar!' : message}
             </Alert>
-            <div class="overflow-hidden">
-            <table class='relative mx-auto' style={{backgroundImage:`url(${frame})`, backgroundSize:'cover'}}>
+            <div className="overflow-hidden">
+            <table className='relative mx-auto' style={{backgroundImage:`url(${frame})`, backgroundSize:'cover'}}>
                 <tbody>
                 {reels.map((e, i) => (
                     <tr key={i}>
@@ -352,7 +365,7 @@ import Winner from '../Assets/Images/winner.jpg'
                 </tbody>
             </table>
             </div>
-            <div class='content-center text-center mt-5'>
+            <div className='content-center text-center mt-5'>
             <Button ref={buttonSpaceBar} variant="contained" size='large' onClick={HandleSpinClick} color={isSpinning ? 'error' : 'success'}>
             {isSpinning ? "STOP" : "PLAY"}
             </Button>
