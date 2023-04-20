@@ -165,22 +165,19 @@ import MegaWinner from '../Assets/Images/MEGAwinner.png'
       Spin();
       const timeoutId = setTimeout(() => {
         setIsAutoPlay(false);
-      }, 60000); // Stop after 1 minute
+      }, 60000);
     
       const intervalId = setInterval(() => {
         setMessage('Good Luck!')
         Spin();
       }, 1500);
     
-      // Store the timeout and interval IDs in state
       setTimeoutId(timeoutId);
       setIntervalId(intervalId);
     }
     
     function stopAutoPlay() {
       setIsAutoPlay(false);
-    
-      // Clear the timeout and interval using their IDs stored in state
       clearTimeout(timeoutId);
       clearInterval(intervalId);
     }
@@ -393,12 +390,12 @@ import MegaWinner from '../Assets/Images/MEGAwinner.png'
                 </tbody>
             </table>
             </div>
-            <div className='content-center text-center mt-5'>
-            <Button ref={buttonSpaceBar} variant="contained" size='large' onClick={HandleSpinClick} color={isSpinning ? 'error' : 'success'}>
+            <div className={isAutoPlay ? 'collapse h-5' : 'content-center text-center mt-5'}>
+            <Button ref={buttonSpaceBar} variant="contained" size='large' onClick={HandleSpinClick} color={isSpinning ? 'error' : 'success'} disabled={isAutoPlay}>
             {isSpinning ? "STOP" : "PLAY"}
             </Button>
             </div>
-            <div className='content-center text-center mt-5 rounded-full'>
+            <div className={isAutoPlay ? 'content-center text-center rounded-full' : 'content-center text-center rounded-full mt-5'}>
             <Button variant="contained" size='large' color='success' onClick={isAutoPlay ? stopAutoPlay : autoPlay }>{isAutoPlay ? 'Auto is ON' : 'Auto is OFF'}</Button>
             </div>
         </div>
