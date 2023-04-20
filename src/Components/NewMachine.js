@@ -209,20 +209,21 @@ import Winner from '../Assets/Images/winner.jpg'
                 });
               }
         });
-    const tween = gsap.to(spritesInCombo, {
-        opacity: 1,
-        duration: 0.07,
-        stagger: 0.018,
-        repeat: -1,
-        yoyo: true,
-      });
-      spriteAnimation.add(timeline, 0)
-      spriteAnimation.to({}, { duration: 0.68, onComplete: () => tween.reverse() });
-      spriteAnimation.to({}, { duration: 0.75, onComplete: () => tween.kill() });
-      spriteAnimation.to(spritesInCombo, {
-        opacity: 0,
-        duration: 0.4,
-      });
+        const tween = gsap.to(spritesInCombo, {
+          opacity: 1,
+          duration: 0.07,
+          stagger: 0.018,
+          repeat: -1,
+          yoyo: true,
+        });
+        
+        spriteAnimation.add(timeline, 0);
+        spriteAnimation.add(tween, 0);
+        
+        spriteAnimation.to(spritesInCombo, {
+          opacity: 0,
+          duration: 0.8,
+        });
     });
         };
       }
