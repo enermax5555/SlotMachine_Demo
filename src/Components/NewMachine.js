@@ -49,7 +49,9 @@ import MegaWinner from '../Assets/Images/MEGAwinner.png'
     const [spacebarPressed, setSpacebarPressed] = useState(false);
     const winSoundRef = useRef(null);
     const spinPaySoundRef = useRef(null);
-
+    const [isAutoPlay, setIsAutoPlay] = useState(false)
+    const [timeoutId, setTimeoutId] = useState(null)
+    const [intervalId, setIntervalId] = useState(null)
     BackgroundMusic.volume = 0.1;
     BackgroundMusic.loop = true;
     BackgroundMusic.play()
@@ -158,6 +160,31 @@ import MegaWinner from '../Assets/Images/MEGAwinner.png'
         winningAnimation(checkForWin())  
     }
 
+    function autoPlay() {
+      setIsAutoPlay(true);
+      Spin();
+      const timeoutId = setTimeout(() => {
+        setIsAutoPlay(false);
+      }, 60000); // Stop after 1 minute
+    
+      const intervalId = setInterval(() => {
+        setMessage('Good Luck!')
+        Spin();
+      }, 1500);
+    
+      // Store the timeout and interval IDs in state
+      setTimeoutId(timeoutId);
+      setIntervalId(intervalId);
+    }
+    
+    function stopAutoPlay() {
+      setIsAutoPlay(false);
+    
+      // Clear the timeout and interval using their IDs stored in state
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    }
+
     function HandleSpinClick(){
         if (!isSpinning){
             Spin()
@@ -244,6 +271,7 @@ import MegaWinner from '../Assets/Images/MEGAwinner.png'
     function Spin() {
             document.querySelectorAll("div[style*='fixed']").forEach((sprite) => {
             sprite.remove();
+            
           })
         const spinPay = spinPaySoundRef.current;
         spinPay.volume = 0.3
@@ -369,6 +397,9 @@ import MegaWinner from '../Assets/Images/MEGAwinner.png'
             <Button ref={buttonSpaceBar} variant="contained" size='large' onClick={HandleSpinClick} color={isSpinning ? 'error' : 'success'}>
             {isSpinning ? "STOP" : "PLAY"}
             </Button>
+            </div>
+            <div className='content-center text-center mt-5 rounded-full'>
+            <Button variant="contained" size='large' color='success' onClick={isAutoPlay ? stopAutoPlay : autoPlay }>{isAutoPlay ? 'Auto is ON' : 'Auto is OFF'}</Button>
             </div>
         </div>
         </main>
