@@ -1,6 +1,6 @@
 # SlotMachine Game 3x3
 ### Simple game made with React, TailwindCss and GSAP
-<img src='ReadmeIMG.png' height='280' width='300' alt='Overview Image'></img>
+<img src='ReadmeIMG.png' height='400' width='500' alt='Overview Image'></img>
 
 Game content:
 - 3 reels with 3 elements inside in each reel.
