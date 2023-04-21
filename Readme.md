@@ -7,7 +7,7 @@ Game content:
 - They are random elements generating
 - We have button for Spin the reels, this button become Stop while the reels are spinning.
 - We have AutoPlay button also.
-- The elements is 3 line only, basically it's chacking each row for win. If 3 elements from same time encounter we got a winner message and the elements are begin animated.
+- Basically it's checking each row for win. If 3 elements from same time encounter we got a winner message and the elements are begin animated.
 - With 1 winning row we get "WINNER", with 2 winning rows we get "BIG WINNER!" and with 3 we got the "MEGA WINNER!!!"
 - We also have some usefull alerts.
 
@@ -33,7 +33,7 @@ https://enermax5555.github.io/SlotMachine_Demo/
   
 I will provide in helpful links the installation instructions.
 
-3 You can start your own local server via react script and try it.
+3 You can start your own local server via node.
 >npm start
 
 ## Helpful links
